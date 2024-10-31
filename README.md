@@ -57,20 +57,20 @@
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>외래키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>password</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O, 최대 50자</b></td>
+            <td ><b>필수</b></td>
           </tr>
         </table>   
   - 응답
@@ -84,32 +84,32 @@
           <tr>
             <td ><b>schedule_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O, 자동증가</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>외래키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O, 최대 50자</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>created_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X, 자동 반영</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>edit_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X, 자동 반영</b></td>
+            <td ><b>옵션</b></td>
           </tr>
     </table>   
 </details>
@@ -164,26 +164,26 @@
           <tr>
             <td ><b>schedule_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>외래키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>created_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X</b></td>
+            <td ><b>옵션</b></td>
           </tr>
     </table> 
 </details>
@@ -230,26 +230,26 @@
           <tr>
             <td ><b>schedule_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>외래키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>created_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X</b></td>
+            <td ><b>옵션</b></td>
           </tr>
     </table> 
 </details>
@@ -299,20 +299,20 @@
           <tr>
             <td ><b>schedule_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>password</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수X</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table> 
   - 응답
@@ -326,20 +326,20 @@
           <tr>
             <td ><b>schedule_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>todo</b></td>
-            <td ><b>varchar(50)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>edit_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table> 
 </details>
@@ -366,12 +366,12 @@
 </details>
 
 ## writer
-|   기능   | Method |             URL             |               request                | response |          상태코드           
-|:------:|:------:|:---------------------------:|:------------------------------------:|:--------:|:-----------------------:|
-| 작성자 등록 |  POST  |        /api/writers         |           요청 body: writer            |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
-| 작성자 조회 |  GET   |   /api/writers/{writerId}   |          요청 param: writerId          |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 수정 |  PUT   |   /api/writers/{writerId}   | 요청 body: writer<br>요청 param: writerId |  수정된 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 삭제 | DELETE | /api/schedules/{scheduleId} |          요청 param: writerId          |    -     |        200: 정상삭제 <br/> 400: 오류       
+|   기능   | Method |             URL             |     request     | response |          상태코드           
+|:------:|:------:|:---------------------------:|:---------------:|:--------:|:-----------------------:|
+| 작성자 등록 |  POST  |        /api/writers         | 요청 body: writer |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
+| 작성자 조회 |  GET   |   /api/writers/{writerId}   |        -        |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
+| 작성자 수정 |  PUT   |   /api/writers/{writerId}   | 요청 body: writer |  수정된 정보  |        200: 정상조회 <br/> 404: 오류
+| 작성자 삭제 | DELETE | /api/schedules/{scheduleId} |        -        |    -     |        200: 정상삭제 <br/> 400: 오류       
 
 [//]: # (작성자 등록)
 <details>
@@ -419,15 +419,15 @@
           </tr>
           <tr>
             <td ><b>email</b></td>
-            <td ><b>varchar(30)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>name</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
         </table>   
   - 응답
@@ -441,32 +441,32 @@
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O, 자동 증가</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>email</b></td>
-            <td ><b>varchar(30)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>name</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>created_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X, 자동 반영</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>edit_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X, 자동 반영</b></td>
+            <td ><b>옵션</b></td>
           </tr>
     </table>  
 </details>
@@ -511,20 +511,20 @@
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O, 자동 증가</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>email</b></td>
-            <td ><b>varchar(30)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>name</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table>  
 </details>
@@ -575,20 +575,20 @@
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>email</b></td>
-            <td ><b>varchar(30)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>name</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
         </table>   
   - 응답
@@ -602,26 +602,26 @@
           <tr>
             <td ><b>writer_id</b></td>
             <td ><b>int</b></td>
-            <td ><b>주키</b></td>
-            <td ><b>필수O</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>email</b></td>
-            <td ><b>varchar(30)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>name</b></td>
-            <td ><b>varchar(20)</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
-            <td ><b>필수O</b></td>
+            <td ><b>필수</b></td>
           </tr>
           <tr>
             <td ><b>edit_date</b></td>
-            <td ><b>datetime</b></td>
+            <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>필수X</b></td>
+            <td ><b>옵션</b></td>
           </tr>
     </table>  
 </details>
