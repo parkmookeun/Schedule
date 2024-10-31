@@ -1,13 +1,13 @@
 # API 명세서
 
 ## schedule
-|    기능    | Method |             URL             |                  request                  | response |          상태코드           
-|:--------:|:------:|:---------------------------:|:-----------------------------------------:|:--------:|:-----------------------:|
-|  일정 등록   |  POST  |       /api/schedules        |             요청 body: schedule             |  등록 정보   | 201: 정상등록 <br/> 400: 오류 |
-|  일정 조회   |  GET   | /api/schedules/{scheduleId} |           요청 param: scheduleId            | 단건 응답 정보 |        200: 정상조회 <br/> 404: 오류
-| 일정 목록 조회 |  GET   |       /api/schedules        |                     x                     | 다건 응답 정보 |        200: 정상조회 <br/> 400: 오류       
-|  일정 수정   |  PUT   | /api/schedules/{scheduleId} | 요청 body: schedule <br/> param: scheduleId |  수정 정보   |        200: 정상수정 <br/> 400: 오류       
-|  일정 삭제   | DELETE | /api/schedules/{scheduleId} |           요청 param: scheduleId            |    -     |        200: 정상삭제 <br/> 400: 오류       
+|    기능    | Method |             URL             |      request      | response |          상태코드           
+|:--------:|:------:|:---------------------------:|:-----------------:|:--------:|:-----------------------:|
+|  일정 등록   |  POST  |       /api/schedules        | 요청 body: schedule |  등록 정보   | 201: 정상등록 <br/> 400: 오류 |
+|  일정 조회   |  GET   | /api/schedules/{scheduleId} |         -         | 단건 응답 정보 |        200: 정상조회 <br/> 404: 오류
+| 일정 목록 조회 |  GET   |  /api/schedules?writerId=3  |  param: writerId  | 다건 응답 정보 |        200: 정상조회 <br/> 400: 오류       
+|  일정 수정   |  PUT   | /api/schedules/{scheduleId} | 요청 body: schedule |  수정 정보   |        200: 정상수정 <br/> 400: 오류       
+|  일정 삭제   | DELETE | /api/schedules/{scheduleId} |         -         |    -     |        200: 정상삭제 <br/> 400: 오류       
 
 [//]: # (일정 등록)
 <details>
@@ -30,11 +30,8 @@
   ```json
   {     
         "writer_id" : 1,
-        "writer" : "아무개1",
         "password" : "abc!123",
-        "todo" : "나는 오늘 강의를 들을 것이다.",
-        "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
+        "todo" : "나는 오늘 강의를 들을 것이다."
   }
   ```
   - 응답: HTTP/1.1 201 Created
@@ -43,14 +40,78 @@
   {
         "schedule_id" : 3,
         "writer_id" : 1,
-        "writer" : "아무개1",
-        "password" : "abc!123",
         "todo" : "나는 오늘 강의를 들을 것이다.",
         "created_date" : "2024-10-31",
         "edit_date" : "2024-10-31"
   }
   ```
-            
+- 본문 
+  - 요청
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>외래키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>password</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O, 최대 50자</b></td>
+          </tr>
+        </table>   
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>schedule_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O, 자동증가</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>외래키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O, 최대 50자</b></td>
+          </tr>
+          <tr>
+            <td ><b>created_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X, 자동 반영</b></td>
+          </tr>
+          <tr>
+            <td ><b>edit_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X, 자동 반영</b></td>
+          </tr>
+    </table>   
 </details>
 
 [//]: # (일정 목록 조회)
@@ -65,11 +126,11 @@
       </tr>
       <tr>
         <td>GET</td>
-        <td >/api/schedules</td>
+        <td >/api/schedules?writerId=XXX</td>
       </tr>
     </table>
 - 예시
-  - 요청: GET /api/schedules
+  - 요청: GET /api/schedules?writerId=1
 
   - 응답: HTTP/1.1 200 OK
 
@@ -78,23 +139,53 @@
     {
         "schedule_id" : 3,
         "writer_id" : 1,
-        "writer" : "아무개1"
-        "password" : "abc!123",
         "todo" : "나는 오늘 강의를 들을 것이다.",
         "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
   },
   {
         "schedule_id" : 2,
         "writer_id" : 1,
-       "writer" : "아무개1",
-        "password" : "abc!123",
         "todo" : "나는 오늘 강의를 들을 것이다.",
         "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
   }
   ]
   ```
+- 본문
+  - 요청 x
+    
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>schedule_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>외래키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>created_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X</b></td>
+          </tr>
+    </table> 
 </details>
 
 [//]: # (일정 단건 조회)
@@ -120,14 +211,47 @@
   {
         "schedule_id" : 2,
         "writer_id" : 1,
-       "writer" : "아무개1",
-        "password" : "abc!123",
         "todo" : "나는 오늘 강의를 들을 것이다.",
         "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
   }
   
   ```
+- 본문
+  - 요청 x
+
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>schedule_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>외래키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>created_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X</b></td>
+          </tr>
+    </table> 
 </details>
 
 [//]: # (일정 수정)
@@ -151,8 +275,6 @@
   ```json
   {
         "schedule_id" : 2,
-        "writer_id" : 1,
-        "writer" : "아무개1",
         "password" : "abc!123",
         "todo" : "나는 오늘 쉴 것이다." -> 수정된 내용
   }
@@ -161,13 +283,65 @@
   ```json
   {
         "schedule_id" : 2,
-        "writer_id" : 1,
-        "writer" : "아무개1",
-        "password" : "abc!123",
         "todo" : "나는 오늘 쉴 것이다.",
         "edit_date" : "2024-11-1"
   }
   ```
+- 본문
+  - 요청 
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>schedule_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>password</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+    </table> 
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>schedule_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>todo</b></td>
+            <td ><b>varchar(50)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>edit_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+    </table> 
 </details>
 
 [//]: # (일정 삭제)
@@ -234,7 +408,67 @@
         "edit_date" : "2024-10-31"
   }
   ```
-
+- 본문
+  - 요청
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>email</b></td>
+            <td ><b>varchar(30)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>name</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+        </table>   
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O, 자동 증가</b></td>
+          </tr>
+          <tr>
+            <td ><b>email</b></td>
+            <td ><b>varchar(30)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>name</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>created_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X, 자동 반영</b></td>
+          </tr>
+          <tr>
+            <td ><b>edit_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X, 자동 반영</b></td>
+          </tr>
+    </table>  
 </details>
 
 [//]: # (작성자 단건 조회)
@@ -264,6 +498,35 @@
         "name" : "아무개1"
   }
   ```
+- 본문
+  - 요청 x
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O, 자동 증가</b></td>
+          </tr>
+          <tr>
+            <td ><b>email</b></td>
+            <td ><b>varchar(30)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>name</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+    </table>  
 </details>
 
 [//]: # (일정 수정)
@@ -300,6 +563,67 @@
         "edit_date" : "2024-11-1"
   }
   ```
+- 본문
+  - 요청
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>email</b></td>
+            <td ><b>varchar(30)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>name</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+        </table>   
+  - 응답
+    <table>
+          <tr>
+            <td ><b>이름</b></td>
+            <td ><b>타입</b></td>
+            <td ><b>설명</b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer_id</b></td>
+            <td ><b>int</b></td>
+            <td ><b>주키</b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>email</b></td>
+            <td ><b>varchar(30)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>name</b></td>
+            <td ><b>varchar(20)</b></td>
+            <td ><b></b></td>
+            <td ><b>필수O</b></td>
+          </tr>
+          <tr>
+            <td ><b>edit_date</b></td>
+            <td ><b>datetime</b></td>
+            <td ><b></b></td>
+            <td ><b>필수X</b></td>
+          </tr>
+    </table>  
 </details>
 
 [//]: # (작성자 삭제)
