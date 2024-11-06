@@ -6,13 +6,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateRequestDto {
+public class ScheduleCreateReqDto {
     private final Long writerId;
     private final String password;
     private final String todo;
 
 
-    public CreateRequestDto(Schedule schedule){
+    public ScheduleCreateReqDto(Schedule schedule){
         this.writerId = schedule.getScheduleId();
         this.password = schedule.getPassword();
         this.todo = schedule.getTodo();

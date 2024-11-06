@@ -366,12 +366,12 @@
 </details>
 
 ## writer
-|   기능   | Method |             URL             |     request     | response |          상태코드           
-|:------:|:------:|:---------------------------:|:---------------:|:--------:|:-----------------------:|
-| 작성자 등록 |  POST  |        /api/writers         | 요청 body: writer |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
-| 작성자 조회 |  GET   |   /api/writers/{writerId}   |        -        |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 수정 |  PUT   |   /api/writers/{writerId}   | 요청 body: writer |  수정된 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 삭제 | DELETE | /api/schedules/{scheduleId} |        -        |    -     |        200: 정상삭제 <br/> 400: 오류       
+|   기능   | Method |            URL            |     request     | response |          상태코드           
+|:------:|:------:|:-------------------------:|:---------------:|:--------:|:-----------------------:|
+| 작성자 등록 |  POST  |       /api/writers        | 요청 body: writer |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
+| 작성자 조회 |  GET   |  /api/writers/{writerId}  |        -        |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
+| 작성자 수정 |  PUT   |  /api/writers/{writerId}  | 요청 body: writer |  수정된 정보  |        200: 정상조회 <br/> 404: 오류
+| 작성자 삭제 | DELETE | /api/writers/{scheduleId} |        -        |    -     |        200: 정상삭제 <br/> 400: 오류       
 
 [//]: # (작성자 등록)
 <details>

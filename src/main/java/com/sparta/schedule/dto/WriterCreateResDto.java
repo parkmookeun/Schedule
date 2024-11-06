@@ -1,19 +1,14 @@
-package com.sparta.schedule.domain;
+package com.sparta.schedule.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Writer {
+public class WriterCreateResDto {
     private Long writerId;
-    private String name;
     private String email;
+    private String name;
     private String createdDate;
     private String editDate;
-
-    public Writer(String name, String email){
-        this.name = name;
-        this.email = email;
-    }
 }

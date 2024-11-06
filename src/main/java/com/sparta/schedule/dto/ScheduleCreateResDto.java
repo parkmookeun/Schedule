@@ -4,11 +4,9 @@ import com.sparta.schedule.domain.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
-public class CreateResponseDto {
+public class ScheduleCreateResDto {
     private final Long scheduleId;
     private final Long writerId;
     private final String todo;
@@ -16,7 +14,7 @@ public class CreateResponseDto {
     private final String editDate;
 
 
-    public CreateResponseDto(Schedule schedule){
+    public ScheduleCreateResDto(Schedule schedule){
         this.scheduleId = schedule.getScheduleId();
         this.writerId = schedule.getWriterId();
         this.todo = schedule.getTodo();

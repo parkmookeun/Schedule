@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UpdateResponseDto {
+public class ScheduleUpdateResDto {
     private Long scheduleId;
     private String writer;
     private String todo;

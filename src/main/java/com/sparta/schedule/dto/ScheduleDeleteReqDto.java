@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteRequestDto {
+public class ScheduleDeleteReqDto {
     private String password;
 }

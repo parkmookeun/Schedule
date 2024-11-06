@@ -1,10 +1,10 @@
 package com.sparta.schedule.repository;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.dto.CreateResponseDto;
-import com.sparta.schedule.dto.ReadResponseDto;
-import com.sparta.schedule.dto.UpdateRequestDto;
-import com.sparta.schedule.dto.UpdateResponseDto;
+import com.sparta.schedule.dto.ScheduleCreateResDto;
+import com.sparta.schedule.dto.ScheduleReadResDto;
+import com.sparta.schedule.dto.ScheduleUpdateReqDto;
+import com.sparta.schedule.dto.ScheduleUpdateResDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -33,7 +33,7 @@ public class JdbcScheduleRepository implements ScheduleRepository{
 
     //DB에 저장
     @Override
-    public CreateResponseDto save(Schedule schedule) {
+    public ScheduleCreateResDto save(Schedule schedule) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("schedule_id");
         Map<String, Object> parameters = new HashMap<>();
@@ -45,10 +45,12 @@ public class JdbcScheduleRepository implements ScheduleRepository{
         parameters.put("password",schedule.getPassword());
         parameters.put("created_date", nowString);
         parameters.put("edit_date", nowString);
+
         // 저장 후 생성된 key값을 Number 타입으로 반환하는 메서드
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+
         // 생성 시간과 수정 시간 String 변환 후 리턴
-        return new CreateResponseDto(key.longValue(), schedule.getWriterId(),
+        return new ScheduleCreateResDto(key.longValue(), schedule.getWriterId(),
                 schedule.getTodo(),nowString,nowString);
     }
 
@@ -59,23 +61,23 @@ public class JdbcScheduleRepository implements ScheduleRepository{
     }
     //모든 목록 조회
     @Override
-    public List<ReadResponseDto> findAllSchedules() {
+    public List<ScheduleReadResDto> findAllSchedules() {
         return jdbcTemplate.query("select * from schedule order by edit_date desc", scheduleRowsMapper());
     }
 
     // 수정 날짜로 목록 조회
     @Override
-    public List<ReadResponseDto> findAllSchedulesByEditDate(String date) {
+    public List<ScheduleReadResDto> findAllSchedulesByEditDate(String date) {
         return jdbcTemplate.query("select * from schedule where DATE_FORMAT(edit_date,'%Y-%m-%d') = ? order by edit_date desc", scheduleRowsMapper(),date);
     }
     // 작성자명으로 목록 조회
     @Override
-    public List<ReadResponseDto> findAllSchedulesByName(String writer) {
+    public List<ScheduleReadResDto> findAllSchedulesByName(String writer) {
         return jdbcTemplate.query("select s.schedule_id, s.writer_id, s.todo, s.edit_date from schedule s inner join writer w on s.writer_id = w.writer_id where w.name = ? order by s.edit_date desc", scheduleRowsMapper(),writer);
     }
     // 수정 날짜 & 작성자명으로 목록 조회
     @Override
-    public List<ReadResponseDto> findAllSchedulesByEditDateAndName(String writer, String date) {
+    public List<ScheduleReadResDto> findAllSchedulesByEditDateAndName(String writer, String date) {
         return jdbcTemplate.query("select s.schedule_id, s.writer_id, s.todo, s.edit_date\n" +
                 "from schedule s inner join writer w on s.writer_id = w.writer_id\n" +
                 "where w.name = ? and DATE_FORMAT(s.edit_date,'%Y-%m-%d') = ?\n" +
@@ -84,7 +86,7 @@ public class JdbcScheduleRepository implements ScheduleRepository{
     // 할일 및 작성자명 수정
     @Override
     @Transactional
-    public UpdateResponseDto update(UpdateRequestDto dto, Long scheduleId) throws SQLTransactionRollbackException {
+    public ScheduleUpdateResDto update(ScheduleUpdateReqDto dto, Long scheduleId) throws SQLTransactionRollbackException {
         int todoUpdated = jdbcTemplate.update("update schedule set todo = ?, edit_date = CURRENT_TIME where schedule_id = ? and password = ?", dto.getTodo(), scheduleId, dto.getPassword());
         int writerUpdated = jdbcTemplate.update("update writer set name = ?, edit_date = CURRENT_TIME where writer.writer_id = (select schedule.writer_id from schedule where schedule.schedule_id = ?)", dto.getWriter(), scheduleId);
 
@@ -93,7 +95,7 @@ public class JdbcScheduleRepository implements ScheduleRepository{
             throw new SQLTransactionRollbackException("할일 및 작성자명 둘다 수정되지않았습니다!");
         }
         //성공했다면
-        return new UpdateResponseDto(scheduleId,dto.getWriter(),dto.getTodo(),LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return new ScheduleUpdateResDto(scheduleId,dto.getWriter(),dto.getTodo(),LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
     }
 
     @Override
@@ -101,33 +103,31 @@ public class JdbcScheduleRepository implements ScheduleRepository{
         return jdbcTemplate.update("delete from schedule where schedule_id = ? and password = ?", scheduleId, password);
     }
 
-    private RowMapper<ReadResponseDto> scheduleRowsJoinMapper() {
-        return new RowMapper<ReadResponseDto>() {
+    private RowMapper<ScheduleReadResDto> scheduleRowsJoinMapper() {
+        return new RowMapper<ScheduleReadResDto>() {
             @Override
-            public ReadResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new ReadResponseDto(
+            public ScheduleReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ScheduleReadResDto(
                         rs.getLong("s.schedule_id"),
                         rs.getLong("s.writer_id"),
                         rs.getString("s.todo"),
                         rs.getString("s.edit_date")
                 );
             }
-
         };
     }
 
-    private RowMapper<ReadResponseDto> scheduleRowsMapper() {
-        return new RowMapper<ReadResponseDto>() {
+    private RowMapper<ScheduleReadResDto> scheduleRowsMapper() {
+        return new RowMapper<ScheduleReadResDto>() {
             @Override
-            public ReadResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new ReadResponseDto(
+            public ScheduleReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ScheduleReadResDto(
                         rs.getLong("schedule_id"),
                         rs.getLong("writer_id"),
                         rs.getString("todo"),
                         rs.getString("edit_date")
                 );
             }
-
         };
     }
 
@@ -144,9 +144,7 @@ public class JdbcScheduleRepository implements ScheduleRepository{
                         rs.getString("edit_date")
                 );
             }
-
         };
     }
-
 }
 

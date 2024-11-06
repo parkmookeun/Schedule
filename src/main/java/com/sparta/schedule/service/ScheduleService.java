@@ -18,8 +18,9 @@ public class ScheduleService {
     public ScheduleService(ScheduleRepository repository) {
         this.repository = repository;
     }
+
     //생성 서비스 함수
-    public CreateResponseDto saveSchedule(CreateRequestDto requestDto) {
+    public ScheduleCreateResDto saveSchedule(ScheduleCreateReqDto requestDto) {
 
         // 요청받은 데이터로 Schedule 객체 생성
         Schedule schedule = new Schedule(requestDto.getWriterId(), requestDto.getPassword(),requestDto.getTodo());
@@ -28,17 +29,18 @@ public class ScheduleService {
         return repository.save(schedule);
     }
     //조회 서비스 함수
-    public ReadResponseDto readSchedule(Long scheduleId){
+    public ScheduleReadResDto readSchedule(Long scheduleId){
         Optional<Schedule> optionalSchedule = repository.findById(scheduleId);
 
         if(optionalSchedule.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return new ReadResponseDto(optionalSchedule.get());
+        return new ScheduleReadResDto(optionalSchedule.get());
 
         //리턴
     }
-    public List<ReadResponseDto> readAllSchedule(String writer, String date){
+
+    public List<ScheduleReadResDto> readAllSchedule(String writer, String date){
         if(writer == null && date == null){
             return repository.findAllSchedules();
         }else if(writer == null){
@@ -49,15 +51,16 @@ public class ScheduleService {
             return repository.findAllSchedulesByEditDateAndName(writer,date);
         }
     }
+
     //수정 서비스 로직
-    public UpdateResponseDto updateSchedule(UpdateRequestDto dto, Long scheduleId) throws SQLTransactionRollbackException {
+    public ScheduleUpdateResDto updateSchedule(ScheduleUpdateReqDto dto, Long scheduleId) throws SQLTransactionRollbackException {
         if (dto.getTodo() == null || dto.getPassword() == null || dto.getWriter() == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
             return repository.update(dto, scheduleId);
     }
 
-    public void deleteSchedule(Long scheduleId, DeleteRequestDto dto) {
+    public void deleteSchedule(Long scheduleId, ScheduleDeleteReqDto dto) {
         int delete = repository.delete(scheduleId,dto.getPassword());
         if(delete == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
