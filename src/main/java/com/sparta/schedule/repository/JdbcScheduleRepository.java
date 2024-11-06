@@ -3,15 +3,19 @@ package com.sparta.schedule.repository;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.CreateResponseDto;
 import com.sparta.schedule.dto.ReadResponseDto;
+import com.sparta.schedule.dto.UpdateRequestDto;
+import com.sparta.schedule.dto.UpdateResponseDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTransactionRollbackException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -22,7 +26,7 @@ import java.util.Optional;
 @Repository
 public class JdbcScheduleRepository implements ScheduleRepository{
     private final JdbcTemplate jdbcTemplate;
-
+    private final int All_UPDATED = 2;
     public JdbcScheduleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -76,6 +80,25 @@ public class JdbcScheduleRepository implements ScheduleRepository{
                 "from schedule s inner join writer w on s.writer_id = w.writer_id\n" +
                 "where w.name = ? and DATE_FORMAT(s.edit_date,'%Y-%m-%d') = ?\n" +
                 "order by s.edit_date desc;", scheduleRowsJoinMapper(),writer,date);
+    }
+    // 할일 및 작성자명 수정
+    @Override
+    @Transactional
+    public UpdateResponseDto update(UpdateRequestDto dto, Long scheduleId) throws SQLTransactionRollbackException {
+        int todoUpdated = jdbcTemplate.update("update schedule set todo = ?, edit_date = CURRENT_TIME where schedule_id = ? and password = ?", dto.getTodo(), scheduleId, dto.getPassword());
+        int writerUpdated = jdbcTemplate.update("update writer set name = ?, edit_date = CURRENT_TIME where writer.writer_id = (select schedule.writer_id from schedule where schedule.schedule_id = ?)", dto.getWriter(), scheduleId);
+
+        //실패했다면
+        if(todoUpdated + writerUpdated != All_UPDATED){
+            throw new SQLTransactionRollbackException("할일 및 작성자명 둘다 수정되지않았습니다!");
+        }
+        //성공했다면
+        return new UpdateResponseDto(scheduleId,dto.getWriter(),dto.getTodo(),LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
+
+    @Override
+    public int delete(Long scheduleId, String password) {
+        return jdbcTemplate.update("delete from schedule where schedule_id = ? and password = ?", scheduleId, password);
     }
 
     private RowMapper<ReadResponseDto> scheduleRowsJoinMapper() {

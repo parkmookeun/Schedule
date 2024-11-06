@@ -1,12 +1,13 @@
 package com.sparta.schedule.controller;
 
-import com.sparta.schedule.dto.CreateRequestDto;
-import com.sparta.schedule.dto.CreateResponseDto;
-import com.sparta.schedule.dto.ReadResponseDto;
+import com.sparta.schedule.dto.*;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLTransactionRollbackException;
 import java.util.List;
 
 @RestController
@@ -30,5 +31,21 @@ public class ScheduleController {
     @GetMapping
     public List<ReadResponseDto> readAllSchedule(@RequestParam(required = false) String  writer, @RequestParam(required = false) String date){
         return service.readAllSchedule(writer, date);
+    }
+    //Update - 수정
+    @PutMapping("/{scheduleId}")
+    public ResponseEntity<UpdateResponseDto> updateSchedule(@PathVariable Long scheduleId, @RequestBody UpdateRequestDto dto){
+        try {
+            return new ResponseEntity<>(service.updateSchedule(dto, scheduleId), HttpStatus.OK);
+        } catch (SQLTransactionRollbackException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
+
+    //Delete - 삭제
+    @DeleteMapping("{scheduleId}")
+    public ResponseEntity<Long> deleteSchedule(@PathVariable Long scheduleId, @RequestBody DeleteRequestDto dto){
+        service.deleteSchedule(scheduleId, dto);
+        return new ResponseEntity<>(scheduleId,HttpStatus.OK);
     }
 }

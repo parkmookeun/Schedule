@@ -1,14 +1,13 @@
 package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.dto.CreateRequestDto;
-import com.sparta.schedule.dto.CreateResponseDto;
-import com.sparta.schedule.dto.ReadResponseDto;
+import com.sparta.schedule.dto.*;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLTransactionRollbackException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +47,20 @@ public class ScheduleService {
             return repository.findAllSchedulesByName(writer);
         }else{
             return repository.findAllSchedulesByEditDateAndName(writer,date);
+        }
+    }
+    //수정 서비스 로직
+    public UpdateResponseDto updateSchedule(UpdateRequestDto dto, Long scheduleId) throws SQLTransactionRollbackException {
+        if (dto.getTodo() == null || dto.getPassword() == null || dto.getWriter() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+            return repository.update(dto, scheduleId);
+    }
+
+    public void deleteSchedule(Long scheduleId, DeleteRequestDto dto) {
+        int delete = repository.delete(scheduleId,dto.getPassword());
+        if(delete == 0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 }
