@@ -29,8 +29,12 @@ public class ScheduleController {
     }
     //Read - 다건 조회
     @GetMapping
-    public List<ScheduleReadResDto> readAllSchedule(@RequestParam(required = false) String  writer, @RequestParam(required = false) String date){
-        return service.readAllSchedule(writer, date);
+    public List<ScheduleAllReadResDto> readAllSchedule(@RequestParam(required = false) String  writer,
+                                                    @RequestParam(required = false) String date,
+                                                    @RequestParam int pageNumber,
+                                                    @RequestParam int pageSize){
+
+        return service.readAllSchedule(writer, date, pageNumber, pageSize);
     }
     //Update - 수정
     @PutMapping("/{scheduleId}")

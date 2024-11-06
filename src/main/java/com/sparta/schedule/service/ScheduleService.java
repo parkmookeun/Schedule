@@ -36,19 +36,18 @@ public class ScheduleService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ScheduleReadResDto(optionalSchedule.get());
-
         //리턴
     }
 
-    public List<ScheduleReadResDto> readAllSchedule(String writer, String date){
+    public List<ScheduleAllReadResDto> readAllSchedule(String writer, String date, Integer pageNumber, Integer pageSize){
         if(writer == null && date == null){
-            return repository.findAllSchedules();
+            return repository.findAllSchedules(pageNumber,pageSize);
         }else if(writer == null){
-            return repository.findAllSchedulesByEditDate(date);
+            return repository.findAllSchedulesByEditDate(date,pageNumber,pageSize);
         }else if(date == null){
-            return repository.findAllSchedulesByName(writer);
+            return repository.findAllSchedulesByName(writer,pageNumber,pageSize);
         }else{
-            return repository.findAllSchedulesByEditDateAndName(writer,date);
+            return repository.findAllSchedulesByEditDateAndName(writer,date,pageNumber,pageSize);
         }
     }
 

@@ -6,18 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ScheduleReadResDto {
+public class ScheduleAllReadResDto {
 
     private final Long scheduleId;
     private final Long writerId;
+    private final String writer;
     private final String todo;
     private final String createdDate;
-
-    public ScheduleReadResDto(Schedule schedule){
-        this.scheduleId = schedule.getScheduleId();
-        this.writerId = schedule.getWriterId();
-        this.todo = schedule.getTodo();
-        this.createdDate = schedule.getCreatedDate();
-    }
 
 }

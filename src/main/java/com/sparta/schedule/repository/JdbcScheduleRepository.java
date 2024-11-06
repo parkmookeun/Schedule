@@ -1,10 +1,7 @@
 package com.sparta.schedule.repository;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.dto.ScheduleCreateResDto;
-import com.sparta.schedule.dto.ScheduleReadResDto;
-import com.sparta.schedule.dto.ScheduleUpdateReqDto;
-import com.sparta.schedule.dto.ScheduleUpdateResDto;
+import com.sparta.schedule.dto.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -61,27 +58,27 @@ public class JdbcScheduleRepository implements ScheduleRepository{
     }
     //모든 목록 조회
     @Override
-    public List<ScheduleReadResDto> findAllSchedules() {
-        return jdbcTemplate.query("select * from schedule order by edit_date desc", scheduleRowsMapper());
+    public List<ScheduleAllReadResDto> findAllSchedules(Integer pageNumber, Integer pageSize) {
+        return jdbcTemplate.query("select s.schedule_id, s.writer_id, w.name, s.todo, s.edit_date from schedule s inner join writer w on s.writer_id = w.writer_id order by edit_date desc limit ?, ?", scheduleRowsJoinMapper(),(pageNumber-1)*pageSize,pageSize);
     }
 
     // 수정 날짜로 목록 조회
     @Override
-    public List<ScheduleReadResDto> findAllSchedulesByEditDate(String date) {
-        return jdbcTemplate.query("select * from schedule where DATE_FORMAT(edit_date,'%Y-%m-%d') = ? order by edit_date desc", scheduleRowsMapper(),date);
+    public List<ScheduleAllReadResDto> findAllSchedulesByEditDate(String date, Integer pageNumber, Integer pageSize) {
+        return jdbcTemplate.query("select s.schedule_id, s.writer_id, w.name, s.todo, s.edit_date from schedule s inner join writer w on s.writer_id = w.writer_id where DATE_FORMAT(s.edit_date,'%Y-%m-%d') = ? order by s.edit_date desc limit ?, ?", scheduleRowsJoinMapper(),date,(pageNumber-1)*pageSize,pageSize);
     }
     // 작성자명으로 목록 조회
     @Override
-    public List<ScheduleReadResDto> findAllSchedulesByName(String writer) {
-        return jdbcTemplate.query("select s.schedule_id, s.writer_id, s.todo, s.edit_date from schedule s inner join writer w on s.writer_id = w.writer_id where w.name = ? order by s.edit_date desc", scheduleRowsMapper(),writer);
+    public List<ScheduleAllReadResDto> findAllSchedulesByName(String writer, Integer pageNumber, Integer pageSize) {
+        return jdbcTemplate.query("select s.schedule_id, s.writer_id, w.name, s.todo, s.edit_date from schedule s inner join writer w on s.writer_id = w.writer_id where w.name = ? order by s.edit_date desc limit ?, ?", scheduleRowsJoinMapper(),writer,(pageNumber-1)*pageSize,pageSize);
     }
     // 수정 날짜 & 작성자명으로 목록 조회
     @Override
-    public List<ScheduleReadResDto> findAllSchedulesByEditDateAndName(String writer, String date) {
-        return jdbcTemplate.query("select s.schedule_id, s.writer_id, s.todo, s.edit_date\n" +
+    public List<ScheduleAllReadResDto> findAllSchedulesByEditDateAndName(String writer, String date, Integer pageNumber, Integer pageSize) {
+        return jdbcTemplate.query("select s.schedule_id, s.writer_id, w.name, s.todo, s.edit_date\n" +
                 "from schedule s inner join writer w on s.writer_id = w.writer_id\n" +
                 "where w.name = ? and DATE_FORMAT(s.edit_date,'%Y-%m-%d') = ?\n" +
-                "order by s.edit_date desc;", scheduleRowsJoinMapper(),writer,date);
+                "order by s.edit_date desc limit ?, ?;", scheduleRowsJoinMapper(),writer,date,(pageNumber-1)*pageSize,pageSize);
     }
     // 할일 및 작성자명 수정
     @Override
@@ -103,13 +100,14 @@ public class JdbcScheduleRepository implements ScheduleRepository{
         return jdbcTemplate.update("delete from schedule where schedule_id = ? and password = ?", scheduleId, password);
     }
 
-    private RowMapper<ScheduleReadResDto> scheduleRowsJoinMapper() {
-        return new RowMapper<ScheduleReadResDto>() {
+    private RowMapper<ScheduleAllReadResDto> scheduleRowsJoinMapper() {
+        return new RowMapper<ScheduleAllReadResDto>() {
             @Override
-            public ScheduleReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new ScheduleReadResDto(
+            public ScheduleAllReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ScheduleAllReadResDto(
                         rs.getLong("s.schedule_id"),
                         rs.getLong("s.writer_id"),
+                        rs.getString("w.name"),
                         rs.getString("s.todo"),
                         rs.getString("s.edit_date")
                 );
@@ -117,19 +115,20 @@ public class JdbcScheduleRepository implements ScheduleRepository{
         };
     }
 
-    private RowMapper<ScheduleReadResDto> scheduleRowsMapper() {
-        return new RowMapper<ScheduleReadResDto>() {
-            @Override
-            public ScheduleReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new ScheduleReadResDto(
-                        rs.getLong("schedule_id"),
-                        rs.getLong("writer_id"),
-                        rs.getString("todo"),
-                        rs.getString("edit_date")
-                );
-            }
-        };
-    }
+//    private RowMapper<ScheduleReadResDto> scheduleRowsMapper() {
+//        return new RowMapper<ScheduleReadResDto>() {
+//            @Override
+//            public ScheduleReadResDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                return new ScheduleReadResDto(
+//                        rs.getLong("schedule_id"),
+//                        rs.getLong("writer_id"),
+//                        rs.getString("")
+//                        rs.getString("todo"),
+//                        rs.getString("edit_date")
+//                );
+//            }
+//        };
+//    }
 
     private RowMapper<Schedule> scheduleRowMapper() {
         return new RowMapper<Schedule>() {
