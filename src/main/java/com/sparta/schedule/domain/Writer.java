@@ -3,6 +3,9 @@ package com.sparta.schedule.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 유저 Entity
+ */
 @Getter
 @AllArgsConstructor
 public class Writer {

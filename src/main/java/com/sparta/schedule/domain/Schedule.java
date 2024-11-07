@@ -1,13 +1,13 @@
 package com.sparta.schedule.domain;
 
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 
+/**
+ * 일정 Entity
+ */
 @Getter
 @AllArgsConstructor
 public class Schedule {
