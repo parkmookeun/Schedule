@@ -1,6 +1,9 @@
 package com.sparta.schedule.dto;
 
 import com.sparta.schedule.domain.Schedule;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +11,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ScheduleCreateReqDto {
     private final Long writerId;
+    @NotNull
     private final String password;
+    @NotNull
+    @Size(max = 200)
     private final String todo;
 
 

@@ -2,6 +2,7 @@ package com.sparta.schedule.controller;
 
 import com.sparta.schedule.dto.*;
 import com.sparta.schedule.service.WriterService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class WriterController {
     private final WriterService service;
 
     @PostMapping
-    public ResponseEntity<WriterCreateResDto> createWriter(@RequestBody WriterCreateReqDto dto){
+    public ResponseEntity<WriterCreateResDto> createWriter(@RequestBody @Valid WriterCreateReqDto dto){
         WriterCreateResDto writerCreateResDto = service.saveWriter(dto);
         return new ResponseEntity<>(writerCreateResDto, HttpStatus.CREATED);
     }
@@ -30,7 +31,7 @@ public class WriterController {
 
     @PutMapping("/{writerId}")
     public ResponseEntity<WriterUpdateResDto> updateWriter(@PathVariable Long writerId,
-                                                           @RequestBody WriterUpdateReqDto dto){
+                                                           @RequestBody @Valid WriterUpdateReqDto dto){
         try {
             return new ResponseEntity<>(service.updateWriter(writerId, dto), HttpStatus.OK);
         }catch (SQLTransactionRollbackException e){

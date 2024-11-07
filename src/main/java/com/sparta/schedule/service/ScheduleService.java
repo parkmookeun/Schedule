@@ -2,6 +2,7 @@ package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.*;
+import com.sparta.schedule.exception.PasswordNotCorrectException;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,7 @@ public class ScheduleService {
     public void deleteSchedule(Long scheduleId, ScheduleDeleteReqDto dto) {
         int delete = repository.delete(scheduleId,dto.getPassword());
         if(delete == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new PasswordNotCorrectException("패스워드가 일치하지 않습니다!");
         }
     }
 }
