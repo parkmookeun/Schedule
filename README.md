@@ -1,13 +1,13 @@
 # API 명세서
 
 ## schedule
-|    기능    | Method |             URL             |      request      | response |          상태코드           
-|:--------:|:------:|:---------------------------:|:-----------------:|:--------:|:-----------------------:|
-|  일정 등록   |  POST  |       /api/schedules        | 요청 body: schedule |  등록 정보   | 201: 정상등록 <br/> 400: 오류 |
-|  일정 조회   |  GET   | /api/schedules/{scheduleId} |         -         | 단건 응답 정보 |        200: 정상조회 <br/> 404: 오류
-| 일정 목록 조회 |  GET   |  /api/schedules?writerId=3  |  param: writerId  | 다건 응답 정보 |        200: 정상조회 <br/> 400: 오류       
-|  일정 수정   |  PUT   | /api/schedules/{scheduleId} | 요청 body: schedule |  수정 정보   |        200: 정상수정 <br/> 400: 오류       
-|  일정 삭제   | DELETE | /api/schedules/{scheduleId} |         -         |    -     |        200: 정상삭제 <br/> 400: 오류       
+|    기능    | Method |             URL             |                 request                 | response |          상태코드           
+|:--------:|:------:|:---------------------------:|:---------------------------------------:|:--------:|:-----------------------:|
+|  일정 등록   |  POST  |       /api/schedules        |            body: 일정생성요청 DTO             |  등록 정보   | 201: 정상등록 <br/> 400: 오류 |
+|  일정 조회   |  GET   | /api/schedules/{scheduleId} |                    -                    | 단건 응답 정보 |        200: 정상조회 <br/> 404: 오류
+| 일정 목록 조회 |  GET   |  /api/schedules  | param: 페이지 번호<br>페이지 크기<br>작성자명<br>수정날짜 | 다건 응답 정보 |        200: 정상조회 <br/> 400: 오류       
+|  일정 수정   |  PUT   | /api/schedules/{scheduleId} |            body: 일정수정요청 DTO             |  수정 정보   |        200: 정상수정 <br/> 406: 오류       
+|  일정 삭제   | DELETE | /api/schedules/{scheduleId} |            body: 일정삭제요청 DTO             |    -     |        200: 정상삭제 <br/> 406: 오류       
 
 [//]: # (일정 등록)
 <details>
@@ -29,7 +29,7 @@
 
   ```json
   {     
-        "writer_id" : 1,
+        "writerId" : 1,
         "password" : "abc!123",
         "todo" : "나는 오늘 강의를 들을 것이다."
   }
@@ -38,11 +38,11 @@
 
   ```json
   {
-        "schedule_id" : 3,
-        "writer_id" : 1,
+        "scheduleId" : 3,
+        "writerId" : 1,
         "todo" : "나는 오늘 강의를 들을 것이다.",
-        "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
+        "createdDate" : "2024-10-31",
+        "editDate" : "2024-10-31"
   }
   ```
 - 본문 
@@ -55,7 +55,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -82,13 +82,13 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>schedule_id</b></td>
+            <td ><b>scheduleId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -100,16 +100,16 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>created_date</b></td>
+            <td ><b>createdDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>edit_date</b></td>
+            <td ><b>editDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>옵션</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table>   
 </details>
@@ -126,27 +126,27 @@
       </tr>
       <tr>
         <td>GET</td>
-        <td >/api/schedules?writerId=XXX</td>
+        <td >/api/schedules?pageNumber=XX&pageSize=XX&&writer=XX&date=XX</td>
       </tr>
     </table>
 - 예시
-  - 요청: GET /api/schedules?writerId=1
+  - 요청: GET /api/schedules?pageNumber=1&pageSize=5&&writer=익명1&date=2024-11-01
 
   - 응답: HTTP/1.1 200 OK
 
   ```json
   "schedules" : [
     {
-        "schedule_id" : 3,
-        "writer_id" : 1,
+        "scheduleId" : 3,
+        "writerId" : 1,
         "todo" : "나는 오늘 강의를 들을 것이다.",
-        "created_date" : "2024-10-31",
+        "createdDate" : "2024-10-31",
   },
   {
-        "schedule_id" : 2,
-        "writer_id" : 1,
+        "scheduleId" : 2,
+        "writerId" : 1,
         "todo" : "나는 오늘 강의를 들을 것이다.",
-        "created_date" : "2024-10-31",
+        "createdDate" : "2024-10-31",
   }
   ]
   ```
@@ -162,14 +162,20 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>schedule_id</b></td>
+            <td ><b>scheduleId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
+            <td ><b></b></td>
+            <td ><b>필수</b></td>
+          </tr>
+          <tr>
+            <td ><b>writer</b></td>
+            <td ><b>문자열</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
@@ -180,10 +186,10 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>created_date</b></td>
+            <td ><b>editDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>옵션</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table> 
 </details>
@@ -204,15 +210,15 @@
       </tr>
     </table>
 - 예시
-    - 요청: GET /api/schedules/{scheduleId}
+    - 요청: GET /api/schedules/2
 
     - 응답: HTTP/1.1 200 OK
   ```json
   {
-        "schedule_id" : 2,
-        "writer_id" : 1,
+        "scheduleId" : 2,
+        "writerId" : 1,
         "todo" : "나는 오늘 강의를 들을 것이다.",
-        "created_date" : "2024-10-31",
+        "createdDate" : "2024-10-31",
   }
   
   ```
@@ -228,13 +234,13 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>schedule_id</b></td>
+            <td ><b>scheduleId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -246,10 +252,10 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>created_date</b></td>
+            <td ><b>createdDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>옵션</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table> 
 </details>
@@ -274,7 +280,7 @@
     - 요청: PUT /api/schedules/{scheduleId}
   ```json
   {
-        "schedule_id" : 2,
+        "scheduleId" : 2,
         "password" : "abc!123",
         "todo" : "나는 오늘 쉴 것이다." -> 수정된 내용
   }
@@ -282,9 +288,9 @@
     - 응답: HTTP/1.1 200 OK
   ```json
   {
-        "schedule_id" : 2,
+        "scheduleId" : 2,
         "todo" : "나는 오늘 쉴 것이다.",
-        "edit_date" : "2024-11-1"
+        "editDate" : "2024-11-1"
   }
   ```
 - 본문
@@ -297,7 +303,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>schedule_id</b></td>
+            <td ><b>scheduleId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -324,7 +330,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>schedule_id</b></td>
+            <td ><b>scheduleId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -336,7 +342,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>edit_date</b></td>
+            <td ><b>editDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -361,17 +367,27 @@
     </table>
 
 - 예시
-    - 요청: DELETE /api/schedules/{scheduleId}
+    - 요청: DELETE /api/schedules/13
+  ```json
+  {
+        "password" : "abc!123"
+  }
+  ```
     - 응답: HTTP/1.1 200 OK
+   ```json
+  {
+        13
+  }
+  ```
 </details>
 
 ## writer
-|   기능   | Method |            URL            |     request     | response |          상태코드           
-|:------:|:------:|:-------------------------:|:---------------:|:--------:|:-----------------------:|
-| 작성자 등록 |  POST  |       /api/writers        | 요청 body: writer |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
-| 작성자 조회 |  GET   |  /api/writers/{writerId}  |        -        |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 수정 |  PUT   |  /api/writers/{writerId}  | 요청 body: writer |  수정된 정보  |        200: 정상조회 <br/> 404: 오류
-| 작성자 삭제 | DELETE | /api/writers/{scheduleId} |        -        |    -     |        200: 정상삭제 <br/> 400: 오류       
+|   기능   | Method |            URL            |      request      | response |          상태코드           
+|:------:|:------:|:-------------------------:|:-----------------:|:--------:|:-----------------------:|
+| 작성자 등록 |  POST  |       /api/writers        | body: 작성자생성요청 DTO |  작성자 정보  | 201: 정상등록 <br/> 400: 오류 |
+| 작성자 조회 |  GET   |  /api/writers/{writerId}  |         -         |  작성자 정보  |        200: 정상조회 <br/> 404: 오류
+| 작성자 수정 |  PUT   |  /api/writers/{writerId}  | body: 작성자수정요청 DTO |  수정된 정보  |        200: 정상조회 <br/> 406: 오류
+| 작성자 삭제 | DELETE | /api/writers/{scheduleId} |         -         |    -     |        200: 정상삭제 <br/>       
 
 [//]: # (작성자 등록)
 <details>
@@ -401,11 +417,11 @@
 
   ```json
   {
-        "writer_id" : 1,
+        "writerId" : 1,
         "email" : "a@b.com",
         "name" : "아무개1",
-        "created_date" : "2024-10-31",
-        "edit_date" : "2024-10-31"
+        "createdDate" : "2024-10-31",
+        "editDate" : "2024-10-31"
   }
   ```
 - 본문
@@ -439,7 +455,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -457,16 +473,16 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>created_date</b></td>
+            <td ><b>createdDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>edit_date</b></td>
+            <td ><b>editDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>옵션</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table>  
 </details>
@@ -487,13 +503,13 @@
       </tr>
     </table>
 - 예시
-    - 요청: GET /api/writers/{writerId}
+    - 요청: GET /api/writers/1
 
     - 응답: HTTP/1.1 200 OK
   
   ```json
   {
-        "writer_id" : 1,
+        "writerId" : 1,
         "email" : "a@b.com",
         "name" : "아무개1"
   }
@@ -509,7 +525,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -546,10 +562,9 @@
     </table>
 
 - 예시
-    - 요청: PUT /api/writers/{writerId}
+    - 요청: PUT /api/writers/1
   ```json
   {
-        "writer_id" : 1,
         "email": "b@c.com", -> 수정된 내용
         "name" : "아무개1"
   }
@@ -557,10 +572,10 @@
     - 응답: HTTP/1.1 200 OK
   ```json
   {
-        "writer_id" : 1,
+        "writerId" : 1,
         "email": "b@c.com",
         "name" : "아무개1",
-        "edit_date" : "2024-11-1"
+        "editDate" : "2024-11-1"
   }
   ```
 - 본문
@@ -570,12 +585,6 @@
             <td ><b>이름</b></td>
             <td ><b>타입</b></td>
             <td ><b>설명</b></td>
-            <td ><b>필수</b></td>
-          </tr>
-          <tr>
-            <td ><b>writer_id</b></td>
-            <td ><b>int</b></td>
-            <td ><b></b></td>
             <td ><b>필수</b></td>
           </tr>
           <tr>
@@ -600,7 +609,7 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>writer_id</b></td>
+            <td ><b>writerId</b></td>
             <td ><b>int</b></td>
             <td ><b></b></td>
             <td ><b>필수</b></td>
@@ -618,10 +627,10 @@
             <td ><b>필수</b></td>
           </tr>
           <tr>
-            <td ><b>edit_date</b></td>
+            <td ><b>editDate</b></td>
             <td ><b>문자열->DATETIME</b></td>
             <td ><b></b></td>
-            <td ><b>옵션</b></td>
+            <td ><b>필수</b></td>
           </tr>
     </table>  
 </details>

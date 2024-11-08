@@ -12,6 +12,6 @@ public class ScheduleAllReadResDto {
     private final Long writerId;
     private final String writer;
     private final String todo;
-    private final String createdDate;
+    private final String editDate;
 
 }
